@@ -1,6 +1,7 @@
 # SaaS Application Governance Registry: Business Case and Walkthrough
 
 > A portfolio project showing how I'd bring order to SaaS adoption: a registry of applications, a review workflow for new requests, and identity controls in Microsoft Entra ID.
+> This was more about me showing what type of information I would be focused on accumulating to get a handle on Saas governance and Shadow IT. From a tool perspective, this could all be captured and stored using Microsoft tools that are already available: Sharepoint Lists, Forms, Power Automations to change statuses. That is a part of solving this problem. A huge part of getting control of shadow IT is RELATIONAL. Being a trusted collaborator where colleagues are comfortable sharing their workflows and are not worried about their work being impeded because their favorite tool is "not secure" or redundant. Truly educating colleagues around the security risks of IT not being able to monitor and track where the company data is going. This project also worked as a study resource for SC-300 prep. Deploying the application in Azure and setting up the identity mechanism, app registration and configuring enterprise application settings are extensive topics for the certification.
 > **Technical code and setup:** [saas-governance-registry](https://github.com/aezechuk/saas-governance-registry)
 > **Status:** deployed on Azure during the build, then taken down to avoid cost. Evidence is in the screenshots and video below.
 
@@ -19,14 +20,11 @@ Teams adopt SaaS tools faster than IT can track them. The usual result:
 
 **What this project answers:** a single registry of applications with ownership and data classification, an intake and review workflow for new requests, a dashboard that shows where the gaps are, and identity controls that make access explicit and auditable.
 
-> 📸 **Screenshot: dashboard with governance gap counts**
-> `![Dashboard](docs/screenshots/dashboard.png)`
+> **Dashboard with governance gap counts**
+> `![Dashboard](docs/dashboard.png)`
 
-> 📸 **Screenshot: drill-down into one gap category**
-> `![Drill-down](docs/screenshots/drilldown.png)`
-
-> 📸 **Screenshot: intake form for a new software request**
-> `![Intake form](docs/screenshots/intake-form.png)`
+> **Intake form for a new software request**
+> `![Intake form](docs/intake-form.png)`
 
 ---
 
@@ -49,11 +47,11 @@ flowchart LR
 - The container image comes from a private registry. A managed identity with pull-only permission fetches it, so no registry password exists.
 - Data lives in a managed PostgreSQL server. Schema changes go through Alembic migrations.
 
-> 📸 **Screenshot: Azure resource group showing the resources**
-> `![Azure resources](docs/screenshots/azure-resources.png)`
+> 📸 **Azure resource group showing the resources**
+> `![Azure resources](docs/azure-resources.png)`
 
-> 📸 **Screenshot: Container App running, health check healthy**
-> `![Container App](docs/screenshots/azure-container-app.png)`
+> **Container App running, health check healthy**
+> `![Container App](docs/azure-container-app.png)`
 
 ---
 
@@ -70,7 +68,7 @@ flowchart LR
 - Created app roles (Requester, Reviewer, Administrator), assigned them to users, and verified the roles arrive as claims in the token.
 - Found and fixed a duplicate role assignment, and granted admin consent where a user hit "Need admin approval".
 
-> 📸 **Screenshot: enterprise application, users and groups with roles**
+> 📸 **Enterprise application, users and groups with roles**
 > `![Users and roles](docs/screenshots/entra-users-roles.png)`
 
 ### Testing how it fails, using the logs
@@ -83,14 +81,14 @@ flowchart LR
 | Account disabled and sessions revoked, existing tab | **Still worked** | Observed |
 | Client secret rotated | New secret added, app updated, tested, old deleted | Observed |
 
-> 📸 **Screenshot: sign-in log, 50105 failure detail**
-> `![Failure 50105](docs/screenshots/signin-50105.png)`
+> **Sign-in log, 50105 failure detail**
+> `![Failure 50105](docs/signin-50105.png)`
 
-> 📸 **Screenshot: audit log entries (role assignment, consent)**
-> `![Audit log](docs/screenshots/audit-log.png)`
+> **Audit log entries (role assignment, consent)**
+> `![Audit log](docs/audit-log.png)`
 
-> 📸 **Screenshot: secrets list after rotation (no values shown)**
-> `![Secret rotation](docs/screenshots/secret-rotation.png)`
+> 📸 **Secrets list after rotation**
+> `![Secret rotation](docs/secret-rotation.png)`
 
 ### What I learned
 - **Disabling an account is not offboarding.** It blocked new sign-ins, but an open app session kept working after the account was disabled and its sessions revoked, because the app issues its own session cookie. Closing that gap takes short session lifetimes, per-request status checks, automated deprovisioning, or apps that support Continuous Access Evaluation.
@@ -100,8 +98,8 @@ flowchart LR
 - **Rotate secrets in the right order:** add the new one, update the app, test, then delete the old one.
 - A platform gap I hit: the `/.auth/me` endpoint isn't available on Container Apps, so I read identity from the request header instead.
 
-> 📸 **Screenshot: the "account has been locked" screen (email cropped)**
-> `![Disabled account](docs/screenshots/disabled-account.png)`
+> 📸 **The "account has been locked" screen**
+> `![Disabled account](docs/disabled-account.png)`
 
 ---
 
@@ -120,33 +118,10 @@ flowchart LR
 | Data protection | Basic backups | Defined retention, geo-redundant backup, tested restore |
 | Logging retention | Entra free-tier retention (about 7 days) | Export sign-in and audit logs to Log Analytics or a SIEM for long-term retention |
 
-**Not built, by choice:** CSV discovery import, AI-assisted review, and retrieval-based governance guidance. I prioritized identity administration over additional features because that is the work I'm preparing for.
-
-> 📸 **Optional: architecture diagram of the production target**
-> `![Production target](docs/screenshots/production-architecture.png)`
+**Things I paused on:** CSV discovery import, AI-assisted review, and retrieval-based governance guidance. I prioritized identity administration over additional features because that is the work I'm preparing for.
 
 ---
 
 ## Frameworks Referenced
 
 OWASP Top 10 (Web, API, LLM), MITRE ATT&CK and ATLAS, NIST SP 800-53 and AI RMF, ISO 42001, EU AI Act. Control mapping lives in the technical repo (`controls-mapping.md`).
-
-## Screenshots Checklist
-
-Crop or blur tenant IDs, subscription IDs, object IDs and emails. Never include secret values, connection strings or passwords.
-
-- [ ] `dashboard.png`
-- [ ] `drilldown.png`
-- [ ] `intake-form.png`
-- [ ] `azure-resources.png`
-- [ ] `azure-container-app.png`
-- [ ] `entra-users-roles.png`
-- [ ] `signin-50105.png`
-- [ ] `audit-log.png`
-- [ ] `secret-rotation.png`
-- [ ] `disabled-account.png`
-- [ ] `production-architecture.png` (optional)
-
-## About
-
-Built by Arielle (Elle) Ezechukwu while preparing for a Cloud/SaaS Administrator role. GitHub: [aezechuk](https://github.com/aezechuk).
