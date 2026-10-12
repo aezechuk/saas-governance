@@ -1,8 +1,12 @@
 # SaaS Application Governance Registry: Business Case and Walkthrough
 
 > A portfolio project showing how I'd bring order to SaaS adoption: a registry of applications, a review workflow for new requests, and identity controls in Microsoft Entra ID.
-> This was more about me showing what type of information I would be focused on accumulating to get a handle on Saas governance and Shadow IT. From a tool perspective, this could all be captured and stored using Microsoft tools that are already available: Sharepoint Lists, Forms, Power Automations to change statuses. That is a part of solving this problem. A huge part of getting control of shadow IT is RELATIONAL. Being a trusted collaborator where colleagues are comfortable sharing their workflows and are not worried about their work being impeded because their favorite tool is "not secure" or redundant. Truly educating colleagues around the security risks of IT not being able to monitor and track where the company data is going. This project also worked as a study resource for SC-300 prep. Deploying the application in Azure and setting up the identity mechanism, app registration and configuring enterprise application settings are extensive topics for the certification.
+> This was more about me showing what type of information I would be focused on accumulating to get a handle on Saas governance and Shadow IT. From a tool perspective, this could all be captured and stored using Microsoft tools that are already available: Sharepoint Lists, Forms, Power Automations to change statuses. That is a part of solving this problem. A huge part of getting control of shadow IT is RELATIONAL. Being a trusted collaborator where colleagues are comfortable sharing their workflows and are not worried about their work being impeded because their favorite tool is "not secure" or redundant. Truly educating colleagues around the security risks of IT not being able to monitor and track where the company data is going. This project also worked as a study resource for SC-300 prep. Deploying the application in Azure and setting up the identity mechanism, app registration and configuring enterprise application settings are extensive topics for the certification. Lastly, I continued to work with Python and Flask, deepening my familiarity with the coding stack.
+
+---
 > **Technical code and setup:** [saas-governance-registry](https://github.com/aezechuk/saas-governance-registry)
+
+---
 > **Status:** deployed on Azure during the build, then taken down to avoid cost. Evidence is in the screenshots and video below.
 
 **Video walkthrough:** `[add link here]` (about 6 minutes)
@@ -47,7 +51,7 @@ flowchart LR
 - The container image comes from a private registry. A managed identity with pull-only permission fetches it, so no registry password exists.
 - Data lives in a managed PostgreSQL server. Schema changes go through Alembic migrations.
 
-> 📸 **Azure resource group showing the resources**
+> **Azure resource group showing the resources**
 > `![Azure resources](docs/azure-resources.png)`
 
 > **Container App running, health check healthy**
@@ -68,8 +72,8 @@ flowchart LR
 - Created app roles (Requester, Reviewer, Administrator), assigned them to users, and verified the roles arrive as claims in the token.
 - Found and fixed a duplicate role assignment, and granted admin consent where a user hit "Need admin approval".
 
-> 📸 **Enterprise application, users and groups with roles**
-> `![Users and roles](docs/screenshots/entra-users-roles.png)`
+> **Enterprise application, users and groups with roles**
+> `![Users and roles](docs/entra-users-roles.png)`
 
 ### Testing how it fails, using the logs
 | Scenario | What happened | How I knew |
