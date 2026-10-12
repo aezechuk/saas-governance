@@ -25,10 +25,10 @@ Teams adopt SaaS tools faster than IT can track them. The usual result:
 **What this project answers:** a single registry of applications with ownership and data classification, an intake and review workflow for new requests, a dashboard that shows where the gaps are, and identity controls that make access explicit and auditable.
 
 > **Dashboard with governance gap counts**
-> `![Dashboard](docs/dashboard.png)`
+> ![Dashboard](docs/dashboard.png)
 
 > **Intake form for a new software request**
-> `![Intake form](docs/intake-form.png)`
+> ![Intake form](docs/intake-form.png)
 
 ---
 
@@ -52,7 +52,7 @@ flowchart LR
 - Data lives in a managed PostgreSQL server. Schema changes go through Alembic migrations.
 
 > **Azure resource group showing the resources**
-> `![Azure resources](docs/azure-resources.png)`
+> ![Azure resources](docs/azure-resources.png)
 
 > **Container App running, health check healthy**
 > `![Container App](docs/azure-container-app.png)`
@@ -86,13 +86,13 @@ flowchart LR
 | Client secret rotated | New secret added, app updated, tested, old deleted | Observed |
 
 > **Sign-in log, 50105 failure detail**
-> `![Failure 50105](docs/signin-50105.png)`
+> ![Failure 50105](docs/signin-50105.png)
 
 > **Audit log entries (role assignment, consent)**
-> `![Audit log](docs/audit-log.png)`
+> ![Audit log](docs/audit-log.png)
 
 > 📸 **Secrets list after rotation**
-> `![Secret rotation](docs/secret-rotation.png)`
+> ![Secret rotation](docs/secret-rotation.png)
 
 ### What I learned
 - **Disabling an account is not offboarding.** It blocked new sign-ins, but an open app session kept working after the account was disabled and its sessions revoked, because the app issues its own session cookie. Closing that gap takes short session lifetimes, per-request status checks, automated deprovisioning, or apps that support Continuous Access Evaluation.
@@ -102,8 +102,8 @@ flowchart LR
 - **Rotate secrets in the right order:** add the new one, update the app, test, then delete the old one.
 - A platform gap I hit: the `/.auth/me` endpoint isn't available on Container Apps, so I read identity from the request header instead.
 
-> 📸 **The "account has been locked" screen**
-> `![Disabled account](docs/disabled-account.png)`
+> **The "account has been locked" screen**
+> ![Disabled account](docs/disabled-account.png)
 
 ---
 
