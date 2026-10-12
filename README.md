@@ -129,3 +129,5 @@ flowchart LR
 ## Frameworks Referenced
 
 OWASP Top 10 (Web, API, LLM), MITRE ATT&CK and ATLAS, NIST SP 800-53 and AI RMF, ISO 42001, EU AI Act. Control mapping lives in the technical repo (`controls-mapping.md`).
+
+Please note that I am well aware there isn't much screenshot hygiene going on. This was a temporary account used solely for this project and has since been completely torn down.
